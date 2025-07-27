@@ -3,6 +3,8 @@ import { easeOut, motion } from 'framer-motion'
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import { Email, Instagram } from '@mui/icons-material';
+import { Link, Element } from 'react-scroll';
+
 function About() {
     // Autofill background fix for all browsers
     // This style will be injected into the page
@@ -23,6 +25,9 @@ function About() {
         color: #000 !important;
       }
     `;
+
+    // Ref for contact us button to scroll down to contact form 
+    const contactRef = useRef();
     // Image data array
     const eventImages = [
         {
@@ -306,7 +311,11 @@ function About() {
                     <h1 className='mb-4 text-center'>Got LaTeX skills? Time to prove it.</h1>
                     <div className='text-center max-w-3xl mb-6 mx-auto'>TexQuest is a competitive platform built to challenge participants on their LaTeX and problem-posing skills. Designed for math and programming enthusiasts, it lets users submit custom questions using LaTeX, which are then graded using AI.</div>
                     <div className='flex justify-center mb-6'>
-                        <button className="bg-blue-600 hover:bg-blue-400 border-2 border-blue-600 hover:border-blue-300 text-white font-medium py-2 px-4 rounded-md transition-all">
+                        <button className="bg-blue-600 hover:bg-blue-400 border-2 border-blue-600 hover:border-blue-300 text-white font-medium py-2 px-4 rounded-md transition-all" onClick={() => {
+                            contactRef.current?.scrollIntoView({
+                                behavior: "smooth"
+                            })
+                            }} >
                             Contact Us
                         </button>
                     </div>
@@ -497,7 +506,7 @@ function About() {
                 </motion.div>
 
                 {/* Contact */}
-                <div className='flex flex-col md:flex-row justify-center gap-8 w-full max-w-4xl mx-auto min-w-0'>
+                <div className='flex flex-col md:flex-row justify-center gap-8 w-full max-w-4xl mx-auto min-w-0' ref={contactRef}>
                     {/* Contact Cards Section */}
                     <div className="flex-1 max-w-md">
                         {/* Email Contact Card */}
@@ -568,7 +577,7 @@ function About() {
                     </div>
 
                     {/* Contact Form Section */}
-                    <div className="flex-1 max-w-md min-w-0 flex-shrink">
+                    <div className="flex-1 max-w-md min-w-0 flex-shrink" name="contactForm">
                         <motion.div
                             initial={{ opacity: 0, x: 90 }}
                             whileInView={{ opacity: 1, x: 0 }}

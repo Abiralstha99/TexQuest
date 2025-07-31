@@ -1,10 +1,9 @@
-import { React, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { easeOut, motion } from 'framer-motion'
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import { Email, Instagram } from '@mui/icons-material';
 import { Link, Element } from 'react-scroll';
-
 function About() {
     // Autofill background fix for all browsers
     // This style will be injected into the page
@@ -23,8 +22,55 @@ function About() {
       input:-internal-autofill-selected {
         background-color: #fff !important;
         color: #000 !important;
-      }
-    `;
+      }`;
+
+
+    // Team members data
+    const teamMembers = [
+        {
+            name: "Andry Rakotonjanabelo",
+            bio: ""
+        },
+        {
+            name: "Abiral Shrestha",
+            bio: ""
+        }
+    ]
+    // FAQ state management
+    const [openFAQ, setOpenFAQ] = useState(null)
+
+    const toggleFAQ = (index) => {
+        setOpenFAQ(openFAQ === index ? null : index)
+    }
+
+    // FAQ data
+    const faqData = [
+        {
+            question: "What is TexQuest?",
+            answer:
+                "TexQuest is a competitive platform designed to challenge participants on their LaTeX and problem-posing skills. It's built for math and programming enthusiasts who want to test their abilities in creating and formatting mathematical content using LaTeX.",
+        },
+        {
+            question: "How does the competition work?",
+            answer:
+                "Participants submit custom questions using LaTeX formatting. These submissions are then evaluated using AI-powered grading systems that assess both the technical accuracy of the LaTeX code and the quality of the mathematical content.",
+        },
+        {
+            question: "What skills do I need to participate?",
+            answer:
+                "You should have basic knowledge of LaTeX syntax, mathematical notation, and problem-solving skills. While advanced LaTeX knowledge is helpful, we welcome participants of all skill levels who are eager to learn and improve.",
+        },
+        {
+            question: "How is the grading done?",
+            answer:
+                "Our AI-powered grading system evaluates submissions based on LaTeX syntax accuracy, mathematical correctness, problem clarity, and overall presentation. The system provides instant feedback to help participants learn and improve.",
+        },
+        {
+            question: "How can I participate in TexQuest?",
+            answer:
+                "Keep an eye on our announcements through our social media channels and email updates. Registration details and competition dates will be posted well in advance of each event.",
+        },
+    ]
 
     // Ref for contact us button to scroll down to contact form 
     const contactRef = useRef();
@@ -315,7 +361,7 @@ function About() {
                             contactRef.current?.scrollIntoView({
                                 behavior: "smooth"
                             })
-                            }} >
+                        }} >
                             Contact Us
                         </button>
                     </div>
@@ -450,6 +496,9 @@ function About() {
                     Past Events
                 </motion.h2>
 
+                {/* Team Members Section */}
+
+                
                 {/* Image Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {eventImages.map((image, index) => (
@@ -465,6 +514,89 @@ function About() {
                         />
                     ))}
                 </div>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="min-h-screen py-12 px-4 flex flex-col items-center justify-center bg-gray-900 text-white relative overflow-hidden">
+                {/* Floating particles effect for FAQ */}
+                {particleStyles.map((style, i) => (
+                    <motion.div
+                        key={`faq-${i}`}
+                        className="absolute w-2 h-2 bg-white rounded-full opacity-30"
+                        style={style}
+                        animate={{
+                            y: [0, -50, 0],
+                            x: [0, 20, -10, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                            scale: [1, 1.2, 0.8, 1],
+                        }}
+                        transition={{
+                            duration: 5 + i * 0.5,
+                            repeat: Number.POSITIVE_INFINITY,
+                            delay: i * 0.8,
+                            ease: "easeInOut",
+                        }}
+                    />
+                ))}
+
+                <motion.div
+                    className="relative z-10 max-w-4xl mx-auto w-full"
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                >
+                    <motion.h2
+                        className="text-5xl font-bold mb-28 pb-2 text-center"
+                        style={{ color: "#ffffff" }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: false }}
+                    >
+                        Frequently Asked Questions
+                    </motion.h2>
+
+                    <div className="space-y-4 ">
+                        {faqData.map((faq, index) => (
+                            <motion.div
+                                key={index}
+                                className="bg-gray-800 bg-opacity-80 rounded-lg border border-gray-600 overflow-hidden"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                viewport={{ once: false }}
+                            >
+                                <button
+                                    className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-700 hover:bg-opacity-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onClick={() => toggleFAQ(index)}
+                                >
+                                    <span className="text-lg font-semibold text-white pr-4">{faq.question}</span>
+                                    <motion.div
+                                        animate={{ rotate: openFAQ === index ? 180 : 0 }}
+                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        className="flex-shrink-0"
+                                    >
+                                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </motion.div>
+                                </button>
+                                <motion.div
+                                    initial={false}
+                                    animate={{
+                                        height: openFAQ === index ? "auto" : 0,
+                                        opacity: openFAQ === index ? 1 : 0,
+                                    }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="px-6 pb-4 text-gray-300 leading-relaxed">{faq.answer}</div>
+                                </motion.div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
             </div>
 
             {/* Contact US section */}
@@ -496,7 +628,7 @@ function About() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     viewport={{ once: false }}
                 >
-                    <h2 className="text-6xl font-bold mb-4 text-white" style={{color:'#fff'}}>
+                    <h2 className="text-6xl font-bold mb-4 text-white" style={{ color: '#fff' }}>
                         Get In Touch
                     </h2>
                     <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -510,7 +642,7 @@ function About() {
                     {/* Contact Cards Section */}
                     <div className="flex-1 max-w-md">
                         {/* Email Contact Card */}
-                        <a href="mailto:shreab01@gettysburg.edu" style={{textDecoration:'none', display:'block'}}>
+                        <a href="mailto:shreab01@gettysburg.edu" style={{ textDecoration: 'none', display: 'block' }}>
                             <motion.div
                                 initial={{ opacity: 0, x: -90 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -519,16 +651,16 @@ function About() {
                                 //     y: -5,
                                 //     transition: { duration: 0.3, ease: "easeOut" }
                                 // }}
-                                transition={{ 
+                                transition={{
                                     duration: 1.2,
                                     ease: "easeOut"
                                 }}
                                 viewport={{ once: false }}
                                 className="flex items-center gap-4 p-4 mb-4 bg-gray-700 bg-opacity-80 rounded-lg border border-gray-600 hover:bg-gray-600 hover:bg-opacity-90 hover:border-gray-500 transition-all duration-500 ease-out cursor-pointer"
                             >
-                                <motion.div 
+                                <motion.div
                                     className="w-15 h-15 bg-gray-600 bg-opacity-80 rounded-lg border border-gray-500 flex items-center justify-center transition-all duration-500 ease-out"
-                                    whileHover={{ 
+                                    whileHover={{
                                         backgroundColor: "rgba(55, 65, 81, 1)",
                                         scale: 1.1,
                                         rotate: 5,
@@ -539,27 +671,27 @@ function About() {
                                 </motion.div>
                                 <div>
                                     <p className="text-white text-sm mb-1 transition-colors duration-500 ease-out">Email us at</p>
-                                    <span className="text-white text-xl font-bold transition-colors duration-500 ease-out" style={{color:'#fff', fontWeight:'bold'}}>shreab01@gettysburg.edu</span>
+                                    <span className="text-white text-xl font-bold transition-colors duration-500 ease-out" style={{ color: '#fff', fontWeight: 'bold' }}>shreab01@gettysburg.edu</span>
                                 </div>
                             </motion.div>
                         </a>
 
                         {/* Instagram Contact Card */}
-                        <a href="https://www.instagram.com/gburg_acm/" target="_blank" rel="noopener noreferrer" style={{textDecoration:'none', display:'block'}}>
+                        <a href="https://www.instagram.com/gburg_acm/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
                             <motion.div
                                 initial={{ opacity: 0, x: -90 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ 
-                                    duration: 1.2, 
+                                transition={{
+                                    duration: 1.2,
                                     delay: 0.2,
                                     ease: "easeOut"
                                 }}
                                 viewport={{ once: false }}
                                 className="flex items-center gap-4 p-4 mb-6 bg-gray-700 bg-opacity-80 rounded-lg border border-gray-600 hover:bg-gray-600 hover:bg-opacity-90 hover:border-gray-500 transition-all duration-500 ease-out cursor-pointer"
                             >
-                                <motion.div 
+                                <motion.div
                                     className="w-15 h-15 bg-opacity-80 rounded-lg border border-gray-500 flex items-center justify-center transition-all duration-500 ease-out"
-                                    whileHover={{ 
+                                    whileHover={{
                                         backgroundColor: "rgba(55, 65, 81, 1)",
                                         scale: 1.1,
                                         rotate: -5,
@@ -570,7 +702,7 @@ function About() {
                                 </motion.div>
                                 <div>
                                     <p className="text-white text-sm mb-1 transition-colors duration-500 ease-out">Follow us on</p>
-                                    <span className="text-white text-xl font-bold transition-colors duration-500 ease-out" style={{color:'#fff', fontWeight:'bold', textDecoration:'none'}}>@gburg_acm</span>
+                                    <span className="text-white text-xl font-bold transition-colors duration-500 ease-out" style={{ color: '#fff', fontWeight: 'bold', textDecoration: 'none' }}>@gburg_acm</span>
                                 </div>
                             </motion.div>
                         </a>

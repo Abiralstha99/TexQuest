@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { easeOut, motion } from 'framer-motion'
+import { color, easeOut, motion } from 'framer-motion'
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
 import { Email, Instagram } from '@mui/icons-material';
 import { Link, Element } from 'react-scroll';
+import faqData from './FAQ.json';
+import teamMembersData from './teamMembers.json';
+
 function About() {
     // Autofill background fix for all browsers
     // This style will be injected into the page
@@ -24,53 +27,17 @@ function About() {
         color: #000 !important;
       }`;
 
-
-    // Team members data
-    const teamMembers = [
-        {
-            name: "Andry Rakotonjanabelo",
-            bio: ""
-        },
-        {
-            name: "Abiral Shrestha",
-            bio: ""
-        }
-    ]
     // FAQ state management
     const [openFAQ, setOpenFAQ] = useState(null)
-
     const toggleFAQ = (index) => {
         setOpenFAQ(openFAQ === index ? null : index)
     }
 
-    // FAQ data
-    const faqData = [
-        {
-            question: "What is TexQuest?",
-            answer:
-                "TexQuest is a competitive platform designed to challenge participants on their LaTeX and problem-posing skills. It's built for math and programming enthusiasts who want to test their abilities in creating and formatting mathematical content using LaTeX.",
-        },
-        {
-            question: "How does the competition work?",
-            answer:
-                "Participants submit custom questions using LaTeX formatting. These submissions are then evaluated using AI-powered grading systems that assess both the technical accuracy of the LaTeX code and the quality of the mathematical content.",
-        },
-        {
-            question: "What skills do I need to participate?",
-            answer:
-                "You should have basic knowledge of LaTeX syntax, mathematical notation, and problem-solving skills. While advanced LaTeX knowledge is helpful, we welcome participants of all skill levels who are eager to learn and improve.",
-        },
-        {
-            question: "How is the grading done?",
-            answer:
-                "Our AI-powered grading system evaluates submissions based on LaTeX syntax accuracy, mathematical correctness, problem clarity, and overall presentation. The system provides instant feedback to help participants learn and improve.",
-        },
-        {
-            question: "How can I participate in TexQuest?",
-            answer:
-                "Keep an eye on our announcements through our social media channels and email updates. Registration details and competition dates will be posted well in advance of each event.",
-        },
-    ]
+    // Card flip state for team members
+    const [flippedIndex, setFlippedIndex] = useState(null);
+    const toggleFlip = (index) => {
+        setFlippedIndex(flippedIndex === index ? null : index)
+    }
 
     // Ref for contact us button to scroll down to contact form 
     const contactRef = useRef();
@@ -484,21 +451,26 @@ function About() {
                         }}
                     />
                 ))}
-
-                <motion.h2
-                    className='text-5xl font-bold mb-12'
-                    style={{ color: '#ffffff' }}
-                    initial={{ opacity: 0, y: 30 }}
+                <motion.div
+                    className="relative z-10 max-w-4xl mx-auto text-center"
+                    initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    viewport={{ once: false }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: true, amount: 0.3 }}
                 >
-                    Past Events
-                </motion.h2>
+                    <motion.h2
+                        className='text-5xl font-bold mb-12'
+                        style={{ color: '#ffffff' }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: false }}
+                    >
+                        Past Events
+                    </motion.h2>
+                </motion.div>
 
-                {/* Team Members Section */}
 
-                
                 {/* Image Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {eventImages.map((image, index) => (
@@ -514,6 +486,106 @@ function About() {
                         />
                     ))}
                 </div>
+            </div>
+
+            {/* Team Members Section */}
+            <div className='min-h-screen py-12 px-4 flex flex-col items-center justify-center bg-gray-900 text-white relative overflow-hidden'>
+                {/* Floating particles effect for Team Members */}
+                {particleStyles.map((style, i) => (
+                    <motion.div
+                        key={`team-${i}`}
+                        className="absolute w-2 h-2 bg-white rounded-full opacity-30"
+                        style={style}
+                        animate={{
+                            y: [0, -50, 0],
+                            x: [0, 20, -10, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                            scale: [1, 1.2, 0.8, 1]
+                        }}
+                        transition={{
+                            duration: 5 + i * 0.5,
+                            repeat: Number.POSITIVE_INFINITY,
+                            delay: i * 0.8,
+                            ease: "easeInOut"
+                        }}
+                    />
+                ))}
+
+                <motion.div
+                    className="relative z-10 max-w-4xl mx-auto text-center"
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: true, amount: 0.3 }}
+                >
+                    <motion.h2
+                        className='text-5xl font-bold mb-12'
+                        style={{ color: '#ffffff' }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: false }}
+                    >
+                        Team Members
+                    </motion.h2>
+                </motion.div>
+
+                {/* Card section */}
+                <div className='w-full flex justify-center'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl w-full mx-auto'>
+                        {teamMembersData.teamMembers.map((member, index) => (
+                            <motion.div
+                                key={index}
+                                className="relative w-full h-80"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
+                                viewport={{ once: false }}
+                                onMouseEnter={() => toggleFlip(index)}
+                                onMouseLeave={() => toggleFlip(null)}
+                            >
+                                <motion.div
+                                    className="relative w-full h-full cursor-pointer"
+                                    style={{ transformStyle: "preserve-3d" }}
+                                    animate={{ rotateY: flippedIndex === index ? 180 : 0 }}
+                                    transition={{ duration: 0.6 }}
+                                >
+                                    {/* Front side */}
+                                    <div
+                                        className="absolute w-full h-full"
+                                        style={{ backfaceVisibility: "hidden" }}
+                                    >
+                                        <img
+                                            className='rounded-lg shadow-lg w-full h-full object-cover'
+                                            alt={member.alt}
+                                            src={member.image}
+                                        />
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                            <h3 className="text-white text-xl font-bold" style={{ color: "white" }}>{member.name}</h3>
+                                        </div>
+                                    </div>
+
+                                    {/* Back side */}
+                                    <div
+                                        className="absolute w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-800 to-black text-white rounded-lg"
+                                        style={{
+                                            backfaceVisibility: "hidden",
+                                            transform: "rotateY(180deg)"
+                                        }}
+                                    >
+                                        <div className="text-center p-6">
+                                            <h3 className="text-2xl font-bold mb-4 text-white" style={{ color: "white" }}>{member.name}</h3>
+                                            <p className="text-lg">
+                                                {member.bio || "More details coming soon!"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
             </div>
 
             {/* FAQ Section */}
@@ -558,7 +630,7 @@ function About() {
                     </motion.h2>
 
                     <div className="space-y-4 ">
-                        {faqData.map((faq, index) => (
+                        {faqData.faqData.map((faq, index) => (
                             <motion.div
                                 key={index}
                                 className="bg-gray-800 bg-opacity-80 rounded-lg border border-gray-600 overflow-hidden"

@@ -6,6 +6,7 @@ import { Email, Instagram } from '@mui/icons-material';
 import { Link, Element } from 'react-scroll';
 import faqData from './FAQ.json';
 import teamMembersData from './teamMembers.json';
+import eventImagesData from './eventImages.json';
 
 function About() {
     // Autofill background fix for all browsers
@@ -41,41 +42,8 @@ function About() {
 
     // Ref for contact us button to scroll down to contact form 
     const contactRef = useRef();
-    // Image data array
-    const eventImages = [
-        {
-            id: 1,
-            url: "/images/pic1.JPEG",
-            alt: "TexQuest Programming Contest 2024",
-        },
-        {
-            id: 2,
-            url: "/images/pic2.JPEG",
-            alt: "After competition, participants enjoying food",
-        },
-        {
-            id: 3,
-            url: "/images/pic3.JPEG",
-            alt: "LaTeX Tutorial Session",
-        },
-        {
-            id: 4,
-            url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&w=400&dpr=2",
-            alt: "Team Collaboration Event",
-        },
-        {
-            id: 5,
-            url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&w=400&dpr=2",
-            alt: "Awards Ceremony",
-            title: "Awards Ceremony"
-        },
-        {
-            id: 6,
-            url: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&w=400&dpr=2",
-            alt: "Coding Competition Finals",
-            title: "Competition Finals"
-        }
-    ];
+    // Import event images from JSON
+    const eventImages = eventImagesData.eventImages;
 
     // Form for contact us
     const {
